@@ -14,8 +14,8 @@
 #include<fstream>
 #include<iostream>
 #include<algorithm>
-//#include <unordered_set>
-//#include <unordered_map>
+#include <unordered_set>
+#include <unordered_map>
 using namespace std;
 const int maxn = 1e6 + 10;
 typedef long long LL;
@@ -44,23 +44,23 @@ int getint(){
 	return t*flag;
 }
 int n,m;
-map<int, int> hash1;
+unordered_map<int, int> hash1;
 int dfs(int i, int cur, int sum)
 {
     if(sum>n) return 0;
     if(sum==n) return hash1.empty();
     int cnt=0;
-    map<int, int> tmp=hash1;
+    unordered_map<int, int> tmp=hash1;
     for(int j=cur+1;j<=n;j++)
     {
-        for(map<int, int>::iterator it=hash1.begin();it!=hash1.end();)
+        for(unordered_map<int, int>::iterator it=hash1.begin();it!=hash1.end();)
         {
             if(j%(it->f)==0 && (it->s)>=1)
             {
                 it->s--;
                 if(it->s==0)
                 {
-                    hash1.erase(it++);
+                    it=hash1.erase(it);
                     continue;
                 }
             }
