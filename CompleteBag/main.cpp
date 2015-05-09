@@ -93,10 +93,11 @@ int main()
     while(cin>>n>>W)
     {
         for(int i=0;i<n;i++) cin>>w[i]>>v[i];
-        for(int i=1;i<=n;i++) for(int j=W;j>=0;j--)
+        for(int i=1;i<=n;i++) for(int j=0;j<=W;j++)
         {
-            for(int k=0;k*w[i-1]<=j;k++)
-                dp[j]=max(dp[j], dp[j-k*w[i-1]]+k*v[i-1]);
+            //for(int k=0;k*w[i-1]<=j;k++)
+            if(j>=w[i-1])
+                dp[j]=max(dp[j], dp[j-w[i-1]]+v[i-1]);
         }
         cout<<dp[W]<<endl;
     }
