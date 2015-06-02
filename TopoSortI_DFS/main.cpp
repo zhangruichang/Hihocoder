@@ -2,27 +2,9 @@
 Author: richard
 Contact: zhangruichang112@gmail.com
 */
-#include<set>
-#include<map>
-#include<list>
-#include<cmath>
-#include<queue>
-#include<stack>
-#include<ctime>
-#include<cstdio>
-#include<string>
-#include<vector>
-#include<climits>
-#include<cstdlib>
-#include<cstring>
-#include<fstream>
-#include<sstream>
-#include<iostream>
-#include<algorithm>
-#include <unordered_set>
-#include <unordered_map>
+#include <bits/stdc++.h>
 using namespace std;
-const int maxn = 1e6 + 10;
+const int maxn = 1e5 + 10;
 typedef long long LL;
 typedef unsigned long long ULL;
 //int, -2^31~2^31-1    -2.1*10^9~2.1*10^9 (-2147483648-2147483647)
@@ -78,10 +60,18 @@ LL MultMod(LL a,LL b,LL MOD)
     }
     return ret;
 }
-int n, t, m,k, u, v, x;
-vector<int> Edge[100000+10];
-int virus[100000+10],indegree[100000+10];
-int MOD=142857;
+int deg[maxn], n, t, m, tt=0, x, y;
+vector<int> edge[maxn];
+
+void dfs(int i)
+{
+    deg[i]=-1;//visit mark
+    tt++;
+    for(auto e: edge[i])
+    {
+        if(--deg[e]==0) dfs(e);
+    }
+}
 int main()
 {
 /*
@@ -90,33 +80,23 @@ int main()
     freopen ("out.txt" , "w" , stdout);
 #endif
 */
-    while(cin>>n>>m>>k)
+    cin>>t;
+    for(int ti=1;ti<=t;ti++)
     {
-        for(int i=1;i<=n;i++) Edge[i].clear();
-        memset(virus, 0, sizeof virus);
-        memset(indegree, 0, sizeof indegree);
-        for(int i=1;i<=k;i++) cin>>x, virus[x]=1;
-        for(int i=1;i<=m;i++)
+        cin>>n>>m;
+        for(int i=1;i<=n;i++) edge[i].clear(), deg[i]=0;
+        for(int i=0;i<m;i++)
         {
-            cin>>u>>v;
-            Edge[u].push_back(v), indegree[v]++;
+            cin>>x>>y;
+            edge[x].push_back(y);
+            deg[y]++;
         }
-        queue<int> q;
+        tt=0;
         for(int i=1;i<=n;i++)
-            if(!indegree[i]) q.push(i);
-        while(!q.empty())
         {
-            auto cur=q.front();q.pop();
-            for(auto e: Edge[cur])
-            {
-                indegree[e]--;
-                virus[e]=(virus[e]+virus[cur])%MOD;
-                if(!indegree[e]) q.push(e);
-            }
+            if(!deg[i]) dfs(i);
         }
-        int ans=0;
-        for(int i=1;i<=n;i++) ans=(ans+virus[i])%MOD;
-        cout<<ans<<endl;;
+        puts(tt==n ? "Correct": "Wrong");
     }
 	return 0;
 }
